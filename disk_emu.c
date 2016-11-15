@@ -105,7 +105,7 @@ int read_blocks(int start_address, int nblocks, void *buffer)
     /*Checks that the data requested is within the range of addresses of the disk*/
     if (start_address + nblocks > MAX_BLOCK)
     {
-        printf("out of bound error %d\n", start_address);
+        printf("out of bound error while reading %d\n", start_address);
         return -1;
     }
 
@@ -151,7 +151,7 @@ int write_blocks(int start_address, int nblocks, void *buffer)
     /*Checks that the data requested is within the range of addresses of the disk*/
     if (start_address + nblocks > MAX_BLOCK)
     {
-        printf("out of bound error\n");
+        printf("out of bound error while writing %d\n", start_address);
         return -1;
     }
 
