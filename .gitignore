@@ -1,3 +1,9 @@
+# cmake files
+.idea
+
+# disk file
+sfs_disk.disk
+
 # Object files
 *.o
 *.ko
