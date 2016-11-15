@@ -15,6 +15,7 @@
 
 static int fuse_getattr(const char *path, struct stat *stbuf)
 {
+    printf("fuse_getattr\n");
     int res = 0;
     int size;
     
@@ -23,7 +24,7 @@ static int fuse_getattr(const char *path, struct stat *stbuf)
     if (strcmp(path, "/") == 0) {
         stbuf->st_mode = S_IFDIR | 0755;
         stbuf->st_nlink = 2;
-    } else if((size = sfs_GetFileSize(path)) != -1) {
+    } else if((size = sfs_getfilesize(path)) != -1) {
         stbuf->st_mode = S_IFREG | 0666;
         stbuf->st_nlink = 1;
         stbuf->st_size = size;
@@ -36,6 +37,7 @@ static int fuse_getattr(const char *path, struct stat *stbuf)
 static int fuse_readdir(const char *path, void *buf, fuse_fill_dir_t filler,
         off_t offset, struct fuse_file_info *fi)
 {
+    printf("fuse_readdir\n");
     char file_name[MAXFILENAME];
     
     if (strcmp(path, "/") != 0)
@@ -44,7 +46,8 @@ static int fuse_readdir(const char *path, void *buf, fuse_fill_dir_t filler,
     filler(buf, ".", NULL, 0);
     filler(buf, "..", NULL, 0);
     
-    while(sfs_get_next_filename(file_name)) {
+    while(sfs_getnextfilename(file_name)) {
+        printf("%s\n", file_name);
         filler(buf, &file_name[1], NULL, 0);
     }
     
@@ -53,6 +56,7 @@ static int fuse_readdir(const char *path, void *buf, fuse_fill_dir_t filler,
 
 static int fuse_unlink(const char *path)
 {
+    printf("fuse_unlink\n");
     int res;
     char filename[MAXFILENAME];
     
@@ -66,6 +70,7 @@ static int fuse_unlink(const char *path)
 
 static int fuse_open(const char *path, struct fuse_file_info *fi)
 {
+    printf("fuse_open\n");
     int res;
     char filename[MAXFILENAME];
     
@@ -82,6 +87,7 @@ static int fuse_open(const char *path, struct fuse_file_info *fi)
 static int fuse_read(const char *path, char *buf, size_t size, off_t offset,
         struct fuse_file_info *fi)
 {
+    printf("fuse_read\n");
     int fd;
     int res;
     
@@ -107,6 +113,7 @@ static int fuse_read(const char *path, char *buf, size_t size, off_t offset,
 static int fuse_write(const char *path, const char *buf, size_t size,
         off_t offset, struct fuse_file_info *fi)
 {
+    printf("fuse_write\n");
     int fd;
     int res;
     
@@ -131,6 +138,7 @@ static int fuse_write(const char *path, const char *buf, size_t size,
 
 static int fuse_truncate(const char *path, off_t size)
 {
+    printf("fuse_truncate\n");
     char filename[MAXFILENAME];
     int fd;
     
@@ -147,16 +155,19 @@ static int fuse_truncate(const char *path, off_t size)
 
 static int fuse_access(const char *path, int mask)
 {
+    printf("fuse_access\n");
     return 0;
 }
 
 static int fuse_mknod(const char *path, mode_t mode, dev_t rdev)
 {
+    printf("fuse_mknod\n");
     return 0;
 }
 
 static int fuse_create (const char *path, mode_t mode, struct fuse_file_info *fp)
 {
+    printf("fuse_create\n");
     char filename[MAXFILENAME];
     int fd;
     

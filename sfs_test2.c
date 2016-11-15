@@ -116,7 +116,7 @@ main(int argc, char **argv)
     }
     filesize[i] = (rand() % (MAX_BYTES-MIN_BYTES)) + MIN_BYTES;
   }
-  sfs_remove(names[0]);
+
   for (i = 0; i < 2; i++) {
     for (j = i + 1; j < 2; j++) {
       if (fds[i] == fds[j]) {
@@ -151,7 +151,7 @@ main(int argc, char **argv)
       }
       free(buffer);
     }
-    int tmp = sfs_GetFileSize(names[i]);
+    int tmp = sfs_getfilesize(names[i]);
     if (filesize[i] != tmp) {
       fprintf(stderr, "ERROR: mismatch file size %d, %d\n", filesize[i], tmp);
       error_count++;
@@ -181,8 +181,8 @@ main(int argc, char **argv)
 
   fds[1] = sfs_fopen(names[1]);
   
-  sfs_fseek(0, 0);
-  sfs_fseek(1, 0);
+  sfs_fseek(fds[0], 0);
+  sfs_fseek(fds[1], 0);
   
   for (i = 0; i < 2; i++) {
     for (j = 0; j < filesize[i]; j += chunksize) {
@@ -231,10 +231,13 @@ main(int argc, char **argv)
     }
   }
 
+
   sfs_remove(names[0]);
   sfs_remove(names[1]);
   /* Now just try to open up a bunch of files.
    */
+
+
   ncreate = 0;
   for (i = 0; i < MAX_FD; i++) {
     names[i] = rand_name();
@@ -378,7 +381,8 @@ main(int argc, char **argv)
   printf("Directory listing\n");
   char *filename = (char *)malloc(MAXFILENAME);
   int max = 0;
-  while (sfs_get_next_filename(filename)) {
+  while (sfs_getnextfilename(filename)) {
+
 	  if (strcmp(filename, names[max]) != 0) {
 	  	printf("ERROR misnamed file %d: %s %s\n", max, filename, names[max]);
 		error_count++;
@@ -419,7 +423,7 @@ main(int argc, char **argv)
 	  sfs_remove(names[i]);
   }
 
-  if (sfs_get_next_filename(filename)) {
+  if (sfs_getnextfilename(filename)) {
 	  fprintf(stderr, "ERROR: should be empty dir\n");
 	  error_count++;
   }

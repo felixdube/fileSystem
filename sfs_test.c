@@ -170,18 +170,21 @@ main(int argc, char **argv)
         fprintf(stderr, "ABORT: Out of memory!\n");
         exit(-1);
       }
+       // printf("fds[i]: %i\n", fds[i]);
       readsize = sfs_fread(fds[i], buffer, chunksize);
 
+        //printf("chunksize: %i\nreadsize: %i\n", chunksize, readsize);
       if (readsize != chunksize) {
         fprintf(stderr, "ERROR: Requested %d bytes, read %d\n", chunksize, readsize);
         readsize = chunksize;
       }
+
       for (k = 0; k < readsize; k++) {
         if (buffer[k] != (char)(j+k)) {
           fprintf(stderr, "ERROR: data error at offset %d in file %s (%d,%d)\n",
                   j+k, names[i], buffer[k], (char)(j+k));
           error_count++;
-          break;
+          //break;
         }
       }
       free(buffer);
@@ -330,7 +333,11 @@ main(int argc, char **argv)
       }
 
       memset(fixedbuf, (char)i, sizeof(fixedbuf));
+
+
       x = sfs_fwrite(fds[0], fixedbuf, sizeof(fixedbuf));
+
+
       if (x != sizeof(fixedbuf)) {
         /* Sooner or later, this write should fail. The only thing is that
          * it should fail gracefully, without any catastrophic errors.
