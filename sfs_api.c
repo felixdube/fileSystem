@@ -377,7 +377,7 @@ int sfs_fopen(char *name) {
 
     fdt[new_fdt_index].used = 1;
     fdt[new_fdt_index].inode = inode_table_index;
-    fdt[new_fdt_index].rwptr = 0;
+    fdt[new_fdt_index].rwptr = inode_table[inode_table_index].size;
 
 
 	return new_fdt_index;

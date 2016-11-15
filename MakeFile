@@ -4,8 +4,8 @@ LDFLAGS = `pkg-config fuse --cflags --libs`
 
 # Uncomment on of the following three lines to compile
 #SOURCES= disk_emu.c sfs_api.c bitmap.c sfs_test.c sfs_api.h bitmap.h
-SOURCES= disk_emu.c sfs_api.c bitmap.c sfs_test2.c sfs_api.h bitmap.h
-#SOURCES= disk_emu.c sfs_api.c bitmap.c fuse_wrappers.c sfs_api.h bitmap.h
+#SOURCES= disk_emu.c sfs_api.c bitmap.c sfs_test2.c sfs_api.h bitmap.h
+SOURCES= disk_emu.c sfs_api.c bitmap.c fuse_wrappers.c sfs_api.h bitmap.h
 
 OBJECTS=$(SOURCES:.c=.o)
 EXECUTABLE=Felix_Dube_sfs
